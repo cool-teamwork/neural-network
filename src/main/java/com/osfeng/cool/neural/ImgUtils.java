@@ -1,4 +1,4 @@
-package tianye.base.bpnn;
+package com.osfeng.cool.neural;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -73,7 +73,7 @@ public class ImgUtils {
 	}
 	
 	public static void main(String[] args) {
-		String src = "D:/some_test/data/0/0_2.bmp";
+		String src = "/home/xuzhenmin/temp/test/data/0/0_2.bmp";
 		double[] vector = new double[8*8];
 		img2Vector(vector, src);
 		System.out.println(Arrays.toString(vector));

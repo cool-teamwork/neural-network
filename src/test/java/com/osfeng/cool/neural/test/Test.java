@@ -1,42 +1,45 @@
-package tianye.base.bpnn;
-
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Map.Entry;
+package com.osfeng.cool.neural.test;
 
 import com.google.gson.Gson;
+import com.osfeng.cool.neural.BP;
 
-public class Test2 {
+import java.io.IOException;
+import java.util.*;
+
+public class Test {
 
 	private final static Gson gson = new Gson();
 	/**
 	 * @param args
 	 * @throws IOException
+	 * @throws InterruptedException 
 	 */
-	public static void main(String[] args) throws IOException {
-		BP bp = new BP(32, 15, 2);
+	public static void main(String[] args) throws IOException, InterruptedException {
+		BP bp = new BP(32, 15, 4);
 
+		Map<String, double[][]> weight2 = bp.getWeight();
+		double[][] ds2 = weight2.get("hidOptWeights");
+		System.out.println("--"+Arrays.toString(ds2[13]));
+		
 		Random random = new Random();
 		List<Integer> list = new ArrayList<Integer>();
 		for (int i = 0; i != 1000; i++) {
-			int value = random.nextInt(100000);
+			int value = random.nextInt();
 			list.add(value);
 		}
 
 		for (int i = 0; i != 200; i++) {
 			for (int value : list) {
-				double[] real = new double[2];
-				if ((value & 1) == 1)
-					real[0] = 1;
+				double[] real = new double[4];
+				if (value >= 0)
+					if ((value & 1) == 1)
+						real[0] = 1;
+					else
+						real[1] = 1;
+				else if ((value & 1) == 1)
+					real[2] = 1;
 				else
-					real[1] = 1;
+					real[3] = 1;
 				double[] binary = new double[32];
 				int index = 31;
 				do {
@@ -45,16 +48,11 @@ public class Test2 {
 				} while (value != 0);
 
 				bp.train(binary, real);
+				
 			}
 		}
 
-		Map<String, double[][]> weight = bp.getWeight();
-		for (Entry<String, double[][]> entry : weight.entrySet()) {
-			String json = gson.toJson(entry.getValue());
-			write(entry.getKey()+"\t"+json+System.getProperty("line.separator"));
-//			double[][] fromJson = gson.fromJson(json, double[][].class);
-		}
-		System.out.println("训练完毕，下面请输入一个任意数字，神经网络将自动判断它是正数还是复数，奇数还是偶数。");
+		System.out.println("训练完毕，下面请输入一个任意数字，神经网络将自动判断它是正数还是负数，奇数还是偶数。");
 
 		while (true) {
 			byte[] input = new byte[10];
@@ -93,27 +91,6 @@ public class Test2 {
 			case 3:
 				System.out.format("%d是一个负偶数\n", rawVal);
 				break;
-			}
-		}
-	}
-	private static void write(String content) {
-		File file = new File("D:/some_test/weight.txt");
-		FileWriter fw = null;
-		try {
-			fw = new FileWriter(file, true);
-			fw.write(content);
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		} finally {
-			if (fw != null) {
-				try {
-					fw.close();
-				} catch (IOException e) {
-					e.printStackTrace();
-				}
-				fw = null;
 			}
 		}
 	}

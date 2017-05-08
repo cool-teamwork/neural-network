@@ -1,4 +1,4 @@
-package tianye.base.bpnn;
+package com.osfeng.cool.neural;
 
 import java.util.HashMap;
 import java.util.Map;

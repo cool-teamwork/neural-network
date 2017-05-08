@@ -1,4 +1,6 @@
-package tianye.base.bpnn;
+package com.osfeng.cool.neural;
+
+import com.google.gson.Gson;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -7,15 +9,10 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Map.Entry;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
-import java.util.concurrent.TimeUnit;
-
-import com.google.gson.Gson;
 
 public class DigitalClassifier {
 	
-	private final static String sourceBasePath="D:/some_test/data/";
+	private final static String sourceBasePath="/home/xuzhenmin/temp/test/data/";
 	private final static int  inputLength = 28*28;
 	private final static Gson gson = new Gson();
 	private final static int training_thread = 10;
@@ -107,7 +104,7 @@ public class DigitalClassifier {
 	}
 
 	private static void write(String content) {
-		File file = new File("D:/some_test/weight.txt");
+		File file = new File("/home/xuzhenmin/temp/test/data/weight.txt");
 		FileWriter fw = null;
 		try {
 			fw = new FileWriter(file, true);
